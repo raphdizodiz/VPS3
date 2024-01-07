@@ -2,14 +2,14 @@
 
 name: Windows-CRD
 
-on: 
+on:
   workflow_dispatch:
     inputs:
       authcode:
-        description: '& "${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" --code="4/0AfJohXnyKWT04CzwEGYk3tMcb-TOqGo7rdTqHqV7OivfxOzyUdQbjD0qaB2ks8j8VOjIQg" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$Env:COMPUTERNAME'
+        description: 'Authorization Code'
         required: true
       pincode:
-        description: '123456'
+        description: 'PIN Code'
         required: true
   
 jobs:
@@ -17,15 +17,18 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
     - name: Initializing Setup
       run: ./setup.ps1
+
     - name: Starting CRD 
-      run: ${{ github.event.inputs.authcode }} -pin=${{ github.event.inputs.pincode }}
+      run: |
+        & "${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" --code="${{ github.event.inputs.authcode }}" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=${Env:COMPUTERNAME} -pin=${{ github.event.inputs.pincode }}
+
+    # Add more steps if necessary
     - name: Keep Alive
-    
-    
-    
-    
-    
-    
+      # Add the appropriate command or script to keep the workflow alive
+
+# Add more configurations or steps as needed
